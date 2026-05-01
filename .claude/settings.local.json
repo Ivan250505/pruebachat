@@ -1,7 +1,13 @@
 {
   "permissions": {
     "allow": [
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "PowerShell(ls \"C:\\\\Users\\\\Lenovo\\\\Documents\\\\Trabajo\\\\Chat-GerenciaMujer\" | where {$_.PSIsContainer -eq $false} | select Name)",
+      "Bash(Get-ChildItem -Path \"C:\\\\Users\\\\Lenovo\\\\Documents\\\\Trabajo\\\\pruebachatbot\" -Recurse -File)",
+      "Bash(Select-Object FullName)",
+      "Bash(Sort-Object FullName)",
+      "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Lenovo\\\\Documents\\\\Trabajo\\\\pruebachatbot\" -File | ForEach-Object { $_.FullName })",
+      "Bash(node -e ' *)"
     ]
   }
 }

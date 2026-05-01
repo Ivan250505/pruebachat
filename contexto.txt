@@ -1,0 +1,211 @@
+
+GERENCIA MUJER
+
+
+Flujo Chatbot WhatsApp
+Diagnóstico Primera Versión
+Versión 2.2
+
+  DOCUMENTO DE USO INTERNO — EQUIPO TÉCNICO  
+
+Gerencia Mujer — 2025
+ 
+Resumen técnico
+
+Plataforma recomendada	Typebot conectado a WhatsApp Business API
+Total de intercambios	12 respuestas del usuario (9 preguntas + 3 caracterización)
+Tiempo estimado	7 a 10 minutos
+Lógica condicional	No — flujo lineal sin bifurcaciones
+Almacenamiento	Google Sheets vía Typebot — timestamp, ID de pregunta, texto completo
+Tono del bot	Neutro, sin juicio. No usar "muy bien", "excelente" entre preguntas.
+Confidencialidad	Informar en mensaje 3 de bienvenida. Nombre no se divulga.
+Mensajes solo del bot	5 de bienvenida + 5 de cierre + 1 de transición a caracterización
+
+Diagrama de flujo
+
+Bloque	Paso	Tipo	Dimensión
+Bienvenida	Mensajes 1–5	Bot — sin respuesta	—
+Bienvenida	Confirmación inicio	Texto libre	—
+Calentamiento	P1 — Momento actual	Selección A–D	Contexto
+Calentamiento	P2 — Freno frecuente	Selección A–D	Acción
+Contexto	P3 — Momento honesto	Texto libre	Contexto
+Identidad	P4 — Martes posible	Texto libre	Identidad
+Dirección	P5 — Camino propio	Texto libre	Dirección
+Soledad	P6 — Frecuencia sola	Selección A–D	Insight soledad
+Soledad	P7 — Lo que pesa más	Selección A–D	Insight soledad
+Sistemas	P8 — Día típico + barrera	Texto libre	Sistemas
+Meta-reflexión	P9 — Lo que descubrió	Texto libre	Cierre metacognitivo
+Caracterización	Mensaje transición	Bot — sin respuesta	—
+Caracterización	C1 — Edad	Selección A–D	—
+Caracterización	C2 — Ocupación	Selección A–D	—
+Caracterización	C3 — Ciudad	Texto libre	—
+Cierre	Mensajes 1–5	Bot — sin respuesta	—
+ 
+Mensajes completos del flujo
+  BIENVENIDA
+
+BIENVENIDA	Bot — 5 mensajes con pausa de 2–3 segundos entre cada uno
+Mensaje 1	Hola. Soy el sistema de diagnóstico denominado Mi Primera Versión, una iniciativa de Gerencia Mujer.
+Mensaje 2	Esta conversación está pensada para mujeres que han funcionado bien cumpliendo expectativas — académicas, familiares, profesionales — y sienten que algo no termina de encajar en lo que están construyendo.
+
+Si lo que estás atravesando es una situación de salud mental que necesite acompañamiento profesional, este no es el espacio adecuado y al final te compartimos recursos.
+Mensaje 3	Todo lo que compartas aquí es confidencial. Tu nombre no se divulgará ni se asociará públicamente a ninguna respuesta.
+
+Vas a recibir un reporte personalizado en las próximas 48 horas — preparado especialmente para ti, no por un sistema automático.
+Mensaje 4	Son 9 preguntas de diagnóstico más 3 datos rápidos al final. Algunas son de selección, otras son abiertas — responde desde lo que realmente sientes, no desde lo que crees que deberías sentir.
+
+Tómate el tiempo que necesites. No hay reloj.
+Mensaje 5	Cuando estés lista, escribe lista y comenzamos. 🌱
+Configuración	Esperar respuesta del usuario (cualquier texto). No avanzar automáticamente. Continuar a P1.
+
+  BLOQUE 1 — CALENTAMIENTO
+
+P1 — Momento actual · Selección múltiple
+
+Mensaje	Para empezar — ¿cuál de estas frases describe mejor dónde estás ahora mismo?
+Opciones	A	Sé lo que quiero pero no estoy avanzando hacia ello
+B	No tengo claro hacia dónde voy y eso me pesa
+C	Estoy avanzando pero siento que algo no encaja
+D	Estoy en piloto automático — el día me lleva más de lo que yo elijo
+
+Configuración	Usuario escribe A, B, C o D. Registrar y continuar a P2.
+
+P2 — Freno más frecuente · Selección múltiple
+
+Mensaje	Cuando piensas en lo que quieres lograr pero no estás logrando, ¿qué aparece primero?
+Opciones	A	“Todavía no estoy lista”
+B	“No tengo tiempo ahora”
+C	“¿Y si no funciona?”
+D	“No sé exactamente qué quiero”
+
+Configuración	Usuario escribe A, B, C o D. Registrar y continuar a P3.
+
+  BLOQUE 2 — CONTEXTO E IDENTIDAD
+
+P3 — Momento honesto · Texto libre
+
+Mensaje	Cuéntame en tus palabras: ¿en qué momento de tu vida estás ahora mismo?
+
+No la versión que contarías en una entrevista — la que le contarías a alguien de confianza.
+Configuración	Texto libre. Registrar y continuar a P4. Sin límite de longitud.
+
+P4 — Martes posible · Texto libre
+
+Mensaje	Imagina que es un martes normal dentro de un año. ¿Cómo te gustaría que fuera diferente al de hoy?
+
+Si tienes claridad, descríbelo con detalle. Si no la tienes todavía, también está bien — puedes decirlo así.
+Configuración	Texto libre. Registrar y continuar a P5. Sin límite de longitud.
+
+  BLOQUE 3 — DIRECCIÓN
+
+P5 — Camino propio o camino esperado · Texto libre
+
+Mensaje	Lo que estás construyendo profesionalmente ahora mismo — ¿lo elegiste tú?
+
+¿O sentiste que había alguien específico cuya aprobación pesaba en la decisión? Puede ser una mamá, un papá, un alguien.
+
+Si fue una mezcla, también sirve.
+Configuración	Texto libre. Registrar y continuar a P6. Sin límite de longitud.
+
+  BLOQUE 4 — SOLEDAD
+
+P6 — Frecuencia de actividades en solitario · Selección múltiple
+
+Mensaje	Cambiamos un poco el tema — pero está conectado con todo lo anterior.
+
+¿Con qué frecuencia haces actividades sola — ir a comer, al cine, a caminar, a explorar algo nuevo — sin necesitar que alguien te acompañe?
+Opciones	A	Lo hago seguido, me siento cómoda sola
+B	A veces, pero prefiero compañía
+C	Casi nunca, me incomoda o me parece raro
+D	Nunca lo había pensado, pero casi siempre busco a alguien
+
+Configuración	Usuario escribe A, B, C o D. Registrar y continuar a P7.
+
+P7 — Lo que pesa más · Selección múltiple
+
+Mensaje	Cuando piensas en hacer algo sola que normalmente harías acompañada — por ejemplo ir a un café o al cine — ¿qué pesa más en tu cabeza?
+Opciones	A	Me sentiría incómoda conmigo misma, no sé qué hacer estando sola
+B	Me preocupa lo que piensen las personas que me vean sola
+C	Las dos cosas se mezclan
+D	Ninguna, me sentiría bien sola
+
+Configuración	Usuario escribe A, B, C o D. Registrar y continuar a P8.
+
+  BLOQUE 5 — SISTEMAS
+
+P8 — Día típico y barrera de hoy · Texto libre
+
+Mensaje	Última pregunta antes del cierre.
+
+¿Cómo es un día típico tuyo? ¿Sientes que tú eliges lo que haces o que el día te arrastra?
+
+Y dime: ¿qué es lo que más te frena para empezar a moverte hoy — no mañana, hoy?
+Configuración	Texto libre. Registrar y continuar a P9. Sin límite de longitud.
+
+  BLOQUE 6 — CIERRE METACOGNITIVO
+
+P9 — Lo que descubrió mientras escribía · Texto libre
+
+Mensaje	De todo lo que escribiste hoy, ¿hay alguna respuesta tuya que te haya sorprendido? ¿Algo que no sabías que pensabas hasta que lo escribiste?
+
+Si nada te sorprendió, también puedes decirlo.
+Configuración	Texto libre. Registrar y continuar a transición de caracterización.
+
+  BLOQUE 7 — CARACTERIZACIÓN
+
+Transición	Ya casi terminamos. Solo necesito tres datos rápidos.
+
+C1 — Edad · Selección múltiple
+
+Mensaje	¿Cuántos años tienes?
+Opciones	A	18 a 20
+B	21 a 23
+C	24 a 26
+D	27 a 30
+
+Configuración	Usuario escribe A, B, C o D. Registrar y continuar a C2.
+
+C2 — Ocupación actual · Selección múltiple
+
+Mensaje	¿Cuál describe mejor tu momento actual?
+Opciones	A	Estoy estudiando
+B	Estudio y trabajo al mismo tiempo
+C	Ya me gradué y estoy trabajando
+D	Ya me gradué y estoy buscando oportunidades
+
+Configuración	Usuario escribe A, B, C o D. Registrar y continuar a C3.
+
+C3 — Ciudad · Texto libre corto
+
+Mensaje	¿En qué ciudad estás?
+Configuración	Texto libre corto. Registrar y continuar a CIERRE.
+
+  CIERRE
+
+CIERRE	Bot — 5 mensajes con pausa de 2–3 segundos entre cada uno. Sin esperar respuesta del usuario.
+Mensaje 1	Eso es todo. 🌱
+Mensaje 2	Lo que acabas de hacer — detenerte a observarte honestamente — ya es diferente de lo que hace la mayoría. Creerse el cuento empieza por conocerse.
+Mensaje 3	Antes de tu reporte, te dejo una práctica que puedes hacer estos días mientras lo preparo.
+
+Las próximas mañanas, antes de abrir tu celular, hazte una sola pregunta: ¿qué quiero yo de hoy?
+
+No tienes que responderla. Solo hacerla. Eso ya es un movimiento.
+Mensaje 4	Tu reporte personalizado llega a este chat en las próximas 48 horas. Incluye tu perfil en las cuatro dimensiones y la pregunta que más vale la pena que te hagas en este momento.
+
+Hasta pronto. 🌱
+Mensaje 5	Si en algún momento de esta conversación apareció algo que sentiste que vale la pena conversar con un profesional, aquí algunos recursos en Colombia:
+
+· Línea Nacional de Salud Mental: 192 (opción 4)
+· Línea Amiga de Bucaramanga: (607) 670 1290
+· Línea de la Vida MinSalud: lineadelavida.minsalud.gov.co
+
+Estos recursos son gratuitos y confidenciales.
+
+Notas de configuración
+
+Selecciones múltiples (P1, P2, P6, P7, C1, C2): configurar para aceptar únicamente A, B, C o D (insensible a mayúsculas/minúsculas). Si la plataforma soporta botones nativos de WhatsApp (reply buttons o list messages), usarlos en lugar de texto libre mejora la experiencia.
+Textos libres (P3, P4, P5, P8, P9, C3): sin límite de caracteres. Permitir respuestas extensas — algunas usuarias escribirán párrafos largos.
+Pausas entre mensajes del bot: 2 a 3 segundos entre cada mensaje consecutivo del bot. Esto simula ritmo conversacional natural y evita que la usuaria reciba bloques largos de texto de golpe.
+Almacenamiento: todas las respuestas se exportan a Google Sheets con tres columnas mínimas: timestamp, identificador de pregunta (P1–P9, C1–C3), texto completo de la respuesta. Una fila por respuesta. Crear hoja maestra por participante usando el número de teléfono como identificador único.
+Tono del bot: neutro y sin juicio. No incluir frases de aprobación entre preguntas (“muy bien”, “excelente respuesta”, “gracias por compartir”). Estas frases activan sesgo de deseabilidad social y distorsionan respuestas siguientes.
+Sin lógica condicional: el flujo es completamente lineal. Independientemente de la respuesta del usuario, el bot avanza al siguiente paso del flujo. No hay bifurcaciones ni mensajes condicionales.
