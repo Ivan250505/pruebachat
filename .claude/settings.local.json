@@ -7,7 +7,8 @@
       "Bash(Select-Object FullName)",
       "Bash(Sort-Object FullName)",
       "PowerShell(Get-ChildItem -Path \"C:\\\\Users\\\\Lenovo\\\\Documents\\\\Trabajo\\\\pruebachatbot\" -File | ForEach-Object { $_.FullName })",
-      "Bash(node -e ' *)"
+      "Bash(node -e ' *)",
+      "Bash(node -e \"require\\('./src/services/sheets'\\); require\\('./src/handler'\\); console.log\\('OK'\\)\")"
     ]
   }
 }

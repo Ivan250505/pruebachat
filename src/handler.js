@@ -57,10 +57,10 @@ async function processMessage(phone, text) {
       await sendText(phone, step.messages[step.messages.length - 1]);
       return;
     }
-    if (step.question_id) await appendResponse(phone, step.question_id, answer);
+    if (step.question_id) await appendResponse(session, step.question_id, answer);
   } else {
     // 'free' o 'any' — acepta cualquier texto
-    if (step.question_id) await appendResponse(phone, step.question_id, trimmed);
+    if (step.question_id) await appendResponse(session, step.question_id, trimmed);
   }
 
   const nextKey = step.next;
