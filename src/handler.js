@@ -83,8 +83,7 @@ async function processMessage(phone, text) {
   }
 
   if (session.current_step === 'done') {
-    const messages = FLOW.closing.messages;
-    await sendText(phone, messages[messages.length - 1]);
+    await sendText(phone, FLOW.closing.done_reply);
     return;
   }
 

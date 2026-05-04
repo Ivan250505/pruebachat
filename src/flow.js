@@ -202,10 +202,10 @@ module.exports = {
       'Eso es todo. 🌱',
       'Lo que acabas de hacer — detenerte a observarte honestamente — ya es diferente de lo que hace la mayoría. Creerse el cuento empieza por conocerse.',
       'Antes de tu reporte, te dejo una práctica que puedes hacer estos días mientras lo preparo.\n\nLas próximas mañanas, antes de abrir tu celular, hazte una sola pregunta: ¿qué quiero yo de hoy?\n\nNo tienes que responderla. Solo hacerla. Eso ya es un movimiento.',
-      'Tu reporte personalizado llega a este chat en las próximas 48 horas. Incluye tu perfil en las cuatro dimensiones y la pregunta que más vale la pena que te hagas en este momento.\n\nHasta pronto. 🌱',
-      'Si en algún momento de esta conversación apareció algo que sentiste que vale la pena conversar con un profesional, aquí algunos recursos en Colombia:\n\n· Línea Nacional de Salud Mental: 192 (opción 4)\n· Línea Amiga de Bucaramanga: (607) 670 1290\n· Línea de la Vida MinSalud: lineadelavida.minsalud.gov.co\n\nEstos recursos son gratuitos y confidenciales.',
-      'Este es el chatbot automatizado para el diagnóstico, si quieres puedes comunicarte con Sylvia al xxx.xxx.xxxx'
+      'Tu reporte personalizado llega directamente desde el número de Sylvia xxxxxxxxx en las próximas 48 horas. Incluye tu perfil en las cuatro dimensiones y la pregunta que más vale la pena que te hagas en este momento.\n\nTe recomendamos que guardes el contacto, recuerda que este es un chatbot automático para recolectar tus respuestas.',
+      'Si en algún momento de esta conversación apareció algo que sentiste que vale la pena conversar con un profesional, aquí algunos recursos en Colombia:\n\n· Línea Nacional de Salud Mental: 192 (opción 4)\n· Línea Amiga de Bucaramanga: (607) 670 1290\n· Línea de la Vida MinSalud: lineadelavida.minsalud.gov.co\n\nEstos recursos son gratuitos y confidenciales.'
     ],
+    done_reply: 'Tu reporte personalizado llega directamente desde el número de Sylvia xxxxxxxxx en las próximas 48 horas. Incluye tu perfil en las cuatro dimensiones y la pregunta que más vale la pena que te hagas en este momento.\n\nTe recomendamos que guardes el contacto, recuerda que este es un chatbot automático para recolectar tus respuestas.',
     type: 'none',
     question_id: null,
     next: null
