@@ -4,7 +4,7 @@ module.exports = {
       'Hola. Soy el sistema de diagnóstico denominado *Mi Primera Versión*, una iniciativa de Gerencia Mujer.',
       'Esta conversación está pensada para mujeres que han funcionado bien cumpliendo expectativas — académicas, familiares, profesionales — y sienten que algo no termina de encajar en lo que están construyendo.\n\nSi lo que estás atravesando es una situación de salud mental que necesite acompañamiento profesional, este no es el espacio adecuado y al final te compartimos recursos.',
       'Todo lo que compartas aquí es confidencial. Tu nombre no se divulgará ni se asociará públicamente a ninguna respuesta.\n\nVas a recibir un reporte personalizado en las próximas 48 horas — preparado especialmente para ti, no por un sistema automático.',
-      'Son 9 preguntas de diagnóstico más 3 datos rápidos al final. Algunas son de selección, otras son abiertas — responde desde lo que realmente sientes, no desde lo que crees que deberías sentir.\n\nTómate el tiempo que necesites. No hay reloj.',
+      'Son 9 preguntas de diagnóstico más 6 datos rápidos al final. Algunas son de selección, otras son abiertas — responde desde lo que realmente sientes, no desde lo que crees que deberías sentir.\n\nTómate el tiempo que necesites. No hay reloj.',
       'Cuando estés lista, escribe *lista* y comenzamos. 🌱'
     ],
     type: 'any',
@@ -95,7 +95,7 @@ module.exports = {
 
   c1: {
     messages: [
-      'Ya casi terminamos. Solo necesito tres datos rápidos.',
+      'Ya casi terminamos. Solo necesito seis datos rápidos.',
       '¿Cuántos años tienes?\n\n*A*  18 a 20\n*B*  21 a 23\n*C*  24 a 26\n*D*  27 a 30'
     ],
     type: 'choice',
@@ -118,6 +118,33 @@ module.exports = {
     ],
     type: 'free',
     question_id: 'C3',
+    next: 'c4'
+  },
+
+  c4: {
+    messages: [
+      '¿Cómo te llamas?'
+    ],
+    type: 'free',
+    question_id: 'C4',
+    next: 'c5'
+  },
+
+  c5: {
+    messages: [
+      '¿Cuál es tu correo electrónico?'
+    ],
+    type: 'free',
+    question_id: 'C5',
+    next: 'c6'
+  },
+
+  c6: {
+    messages: [
+      '¿Cómo es tu número de WhatsApp?'
+    ],
+    type: 'free',
+    question_id: 'C6',
     next: 'closing'
   },
 
