@@ -1,7 +1,7 @@
 // Hoja requerida: "Registros"
 // Cabeceras fila 1:
-// phone | current_step | started_at | completed_at | P1 | P2 | P3 | P4 | P5 | P6 | P7 | P8 | P9 | C1 | C2 | C3
-// A         B               C               D          E    F    G    H    I    J    K    L    M    N    O    P
+// phone | current_step | started_at | completed_at | P1 | P2 | P3 | P4 | P5 | P6 | P7 | P8 | P9 | C1 | C2 | C3 | C4 | C5 | C6
+// A         B               C               D          E    F    G    H    I    J    K    L    M    N    O    P    Q    R    S
 
 const { google } = require('googleapis');
 
@@ -11,7 +11,7 @@ const SHEET = 'Registros';
 const QUESTION_COL = {
   P1: 'E', P2: 'F', P3: 'G', P4: 'H', P5: 'I',
   P6: 'J', P7: 'K', P8: 'L', P9: 'M',
-  C1: 'N', C2: 'O', C3: 'P'
+  C1: 'N', C2: 'O', C3: 'P', C4: 'Q', C5: 'R', C6: 'S'
 };
 
 const auth = new google.auth.GoogleAuth({
