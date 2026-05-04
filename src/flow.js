@@ -18,6 +18,13 @@ module.exports = {
     ],
     type: 'choice',
     question_id: 'P1',
+    label: '¿Dónde estás ahora mismo?',
+    options: {
+      A: 'Sé lo que quiero pero no estoy avanzando hacia ello',
+      B: 'No tengo claro hacia dónde voy y eso me pesa',
+      C: 'Estoy avanzando pero siento que algo no encaja',
+      D: 'Estoy en piloto automático — el día me lleva más de lo que yo elijo'
+    },
     next: 'p2'
   },
 
@@ -27,6 +34,13 @@ module.exports = {
     ],
     type: 'choice',
     question_id: 'P2',
+    label: '¿Qué frena el avance?',
+    options: {
+      A: '"Todavía no estoy lista"',
+      B: '"No tengo tiempo ahora"',
+      C: '"¿Y si no funciona?"',
+      D: '"No sé exactamente qué quiero"'
+    },
     next: 'p3'
   },
 
@@ -36,6 +50,7 @@ module.exports = {
     ],
     type: 'free',
     question_id: 'P3',
+    label: 'Tu momento actual',
     next: 'p4'
   },
 
@@ -45,6 +60,7 @@ module.exports = {
     ],
     type: 'free',
     question_id: 'P4',
+    label: 'Tu martes ideal',
     next: 'p5'
   },
 
@@ -54,6 +70,7 @@ module.exports = {
     ],
     type: 'free',
     question_id: 'P5',
+    label: 'Lo que construyes profesionalmente',
     next: 'p6'
   },
 
@@ -63,6 +80,13 @@ module.exports = {
     ],
     type: 'choice',
     question_id: 'P6',
+    label: 'Actividades sola',
+    options: {
+      A: 'Lo hago seguido, me siento cómoda sola',
+      B: 'A veces, pero prefiero compañía',
+      C: 'Casi nunca, me incomoda o me parece raro',
+      D: 'Nunca lo había pensado, pero casi siempre busco a alguien'
+    },
     next: 'p7'
   },
 
@@ -72,6 +96,13 @@ module.exports = {
     ],
     type: 'choice',
     question_id: 'P7',
+    label: 'Lo que más pesa',
+    options: {
+      A: 'Me sentiría incómoda conmigo misma, no sé qué hacer estando sola',
+      B: 'Me preocupa lo que piensen las personas que me vean sola',
+      C: 'Las dos cosas se mezclan',
+      D: 'Ninguna, me sentiría bien sola'
+    },
     next: 'p8'
   },
 
@@ -81,6 +112,7 @@ module.exports = {
     ],
     type: 'free',
     question_id: 'P8',
+    label: 'Tu día típico',
     next: 'p9'
   },
 
@@ -90,7 +122,24 @@ module.exports = {
     ],
     type: 'free',
     question_id: 'P9',
-    next: 'c1'
+    label: '¿Algo que te sorprendió?',
+    next: 'preview'
+  },
+
+  preview: {
+    messages: [],
+    type: 'summary',
+    question_id: null,
+    next: null
+  },
+
+  edit_menu: {
+    messages: [
+      '¿Cuál pregunta deseas cambiar?\n\n1 · ¿Dónde estás ahora mismo?\n2 · ¿Qué frena el avance?\n3 · Tu momento actual\n4 · Tu martes ideal\n5 · Lo que construyes\n6 · Actividades sola\n7 · Lo que más pesa\n8 · Tu día típico\n9 · ¿Algo que te sorprendió?\n\nEscribe el número.'
+    ],
+    type: 'edit_menu',
+    question_id: null,
+    next: null
   },
 
   c1: {

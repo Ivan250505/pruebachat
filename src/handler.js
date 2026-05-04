@@ -1,10 +1,8 @@
 const FLOW = require('./flow');
 const { sendText, sendSequence } = require('./services/whatsapp');
-const { getSession, createSession, updateSession, completeSession, appendResponse } = require('./services/sheets');
+const { getSession, createSession, updateSession, completeSession, appendResponse, getAnswers, setEditing } = require('./services/sheets');
 
-// Deduplication: track recently processed message IDs (clears after 5 min)
 const processedIds = new Set();
-// Per-phone lock: avoid race conditions when user sends messages rapidly
 const locks = new Map();
 
 async function handleMessage(phone, text, messageId) {
@@ -29,17 +27,58 @@ async function handleMessage(phone, text, messageId) {
   }
 }
 
+const EDIT_MAP = { '1':'p1','2':'p2','3':'p3','4':'p4','5':'p5','6':'p6','7':'p7','8':'p8','9':'p9' };
+
+function truncate(text, max = 60) {
+  return text.length > max ? text.slice(0, max) + '...' : text;
+}
+
+function buildPreviewMessage(answers) {
+  const order = ['p1','p2','p3','p4','p5','p6','p7','p8','p9'];
+  const lines = ['Esto es lo que registré de ti:\n'];
+
+  order.forEach((key, i) => {
+    const step = FLOW[key];
+    const answer = answers[step.question_id] || '—';
+    let display;
+    if (step.type === 'choice' && step.options && step.options[answer]) {
+      display = truncate(step.options[answer]);
+    } else {
+      display = `"${truncate(answer)}"`;
+    }
+    lines.push(`${i + 1} · *${step.label}*\n   ${display}`);
+  });
+
+  lines.push('\n¿Deseas cambiar alguna respuesta?\n\n*A*  Sí, cambiar una\n*B*  No, la información es correcta');
+  return lines.join('\n');
+}
+
+async function advanceTo(phone, session, nextKey) {
+  const nextStep = FLOW[nextKey];
+
+  if (nextStep.type === 'none') {
+    await updateSession(session, nextKey);
+    await sendSequence(phone, nextStep.messages);
+    await completeSession(session);
+  } else if (nextStep.type === 'summary') {
+    await updateSession(session, nextKey);
+    const answers = await getAnswers(session);
+    await sendText(phone, buildPreviewMessage(answers));
+  } else {
+    await updateSession(session, nextKey);
+    await sendSequence(phone, nextStep.messages);
+  }
+}
+
 async function processMessage(phone, text) {
   const session = await getSession(phone);
 
-  // Primera vez que escribe — arrancar flujo de bienvenida
   if (!session) {
     await createSession(phone);
     await sendSequence(phone, FLOW.welcome.messages);
     return;
   }
 
-  // Flujo ya terminado
   if (session.current_step === 'done') return;
 
   const step = FLOW[session.current_step];
@@ -50,38 +89,59 @@ async function processMessage(phone, text) {
 
   const trimmed = text.trim();
 
+  // -- Previsualización: espera A o B --
+  if (step.type === 'summary') {
+    const answer = trimmed.toUpperCase()[0];
+    if (!['A', 'B'].includes(answer)) {
+      await sendText(phone, 'Responde *A* para cambiar una respuesta o *B* para confirmar.');
+      return;
+    }
+    if (answer === 'A') {
+      await advanceTo(phone, session, 'edit_menu');
+    } else {
+      await setEditing(session, false);
+      await advanceTo(phone, session, 'c1');
+    }
+    return;
+  }
+
+  // -- Menú de edición: espera número 1–9 --
+  if (step.type === 'edit_menu') {
+    const num = trimmed[0];
+    if (!EDIT_MAP[num]) {
+      await sendText(phone, FLOW.edit_menu.messages[0]);
+      return;
+    }
+    await setEditing(session, true);
+    await advanceTo(phone, session, EDIT_MAP[num]);
+    return;
+  }
+
+  // -- Preguntas de selección --
   if (step.type === 'choice') {
     const answer = trimmed.toUpperCase()[0];
     if (!['A', 'B', 'C', 'D'].includes(answer)) {
-      // Respuesta inválida — reenviar solo la pregunta
       await sendText(phone, step.messages[step.messages.length - 1]);
       return;
     }
     if (step.question_id) await appendResponse(session, step.question_id, answer);
   } else {
-    // 'free' o 'any' — acepta cualquier texto
+    // 'free' o 'any'
     if (step.question_id) await appendResponse(session, step.question_id, trimmed);
   }
 
-  const nextKey = step.next;
+  // En modo edición, al terminar una pregunta P volver a la previsualización
+  let nextKey = step.next;
+  if (session.editing && step.question_id && step.question_id.startsWith('P')) {
+    nextKey = 'preview';
+  }
 
-  // Fin del flujo (no debería ocurrir en flujo normal, pero por seguridad)
   if (!nextKey) {
     await completeSession(session);
     return;
   }
 
-  const nextStep = FLOW[nextKey];
-
-  if (nextStep.type === 'none') {
-    // Bloque de cierre — enviar mensajes y marcar como completado
-    await updateSession(session, nextKey);
-    await sendSequence(phone, nextStep.messages);
-    await completeSession(session);
-  } else {
-    await updateSession(session, nextKey);
-    await sendSequence(phone, nextStep.messages);
-  }
+  await advanceTo(phone, session, nextKey);
 }
 
 module.exports = { handleMessage };

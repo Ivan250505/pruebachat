@@ -1,7 +1,7 @@
 // Hoja requerida: "Registros"
 // Cabeceras fila 1:
-// phone | current_step | started_at | completed_at | P1 | P2 | P3 | P4 | P5 | P6 | P7 | P8 | P9 | C1 | C2 | C3 | C4 | C5 | C6
-// A         B               C               D          E    F    G    H    I    J    K    L    M    N    O    P    Q    R    S
+// phone | current_step | started_at | completed_at | P1 | P2 | P3 | P4 | P5 | P6 | P7 | P8 | P9 | C1 | C2 | C3 | C4 | C5 | C6 | editing
+// A         B               C               D          E    F    G    H    I    J    K    L    M    N    O    P    Q    R    S    T
 
 const { google } = require('googleapis');
 
@@ -27,7 +27,7 @@ const sheets = google.sheets({ version: 'v4', auth });
 async function getSession(phone) {
   const res = await sheets.spreadsheets.values.get({
     spreadsheetId: SPREADSHEET_ID,
-    range: `${SHEET}!A:D`
+    range: `${SHEET}!A:T`
   });
 
   const rows = res.data.values || [];
@@ -39,6 +39,7 @@ async function getSession(phone) {
     phone:        row[0],
     current_step: row[1],
     started_at:   row[2] || '',
+    editing:      row[19] === 'true',
     _rowNum:      rowIndex + 1
   };
 }
@@ -88,4 +89,26 @@ async function appendResponse(session, questionId, responseText) {
   });
 }
 
-module.exports = { getSession, createSession, updateSession, completeSession, appendResponse };
+async function getAnswers(session) {
+  const res = await sheets.spreadsheets.values.get({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `${SHEET}!E${session._rowNum}:M${session._rowNum}`
+  });
+  const row = (res.data.values || [[]])[0] || [];
+  return {
+    P1: row[0] || '', P2: row[1] || '', P3: row[2] || '',
+    P4: row[3] || '', P5: row[4] || '', P6: row[5] || '',
+    P7: row[6] || '', P8: row[7] || '', P9: row[8] || ''
+  };
+}
+
+async function setEditing(session, flag) {
+  await sheets.spreadsheets.values.update({
+    spreadsheetId: SPREADSHEET_ID,
+    range: `${SHEET}!T${session._rowNum}`,
+    valueInputOption: 'RAW',
+    requestBody: { values: [[flag ? 'true' : '']] }
+  });
+}
+
+module.exports = { getSession, createSession, updateSession, completeSession, appendResponse, getAnswers, setEditing };
