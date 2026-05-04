@@ -31,4 +31,33 @@ async function sendSequence(to, messages, delayMs = 2500) {
   }
 }
 
-module.exports = { sendText, sendSequence };
+async function sendButtons(to, bodyText, buttons) {
+  const res = await fetch(API_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${ACCESS_TOKEN}`
+    },
+    body: JSON.stringify({
+      messaging_product: 'whatsapp',
+      to,
+      type: 'interactive',
+      interactive: {
+        type: 'button',
+        body: { text: bodyText },
+        action: {
+          buttons: buttons.map(b => ({
+            type: 'reply',
+            reply: { id: b.id, title: b.title }
+          }))
+        }
+      }
+    })
+  });
+
+  const data = await res.json();
+  if (!res.ok) console.error(`[WA] Error enviando botones a ${to}:`, JSON.stringify(data));
+  return data;
+}
+
+module.exports = { sendText, sendSequence, sendButtons };

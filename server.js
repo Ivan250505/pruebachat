@@ -32,11 +32,17 @@ app.post('/webhook', (req, res) => {
   if (!messages) return;
 
   const msg = messages[0];
-  if (msg.type !== 'text') return;
+  let phone, text, messageId;
 
-  const phone     = msg.from;
-  const text      = msg.text?.body;
-  const messageId = msg.id;
+  if (msg.type === 'text') {
+    phone     = msg.from;
+    text      = msg.text?.body;
+    messageId = msg.id;
+  } else if (msg.type === 'interactive' && msg.interactive?.type === 'button_reply') {
+    phone     = msg.from;
+    text      = msg.interactive.button_reply.id;
+    messageId = msg.id;
+  }
 
   if (phone && text) {
     console.log(`[webhook] Mensaje de ${phone}: ${text.substring(0, 60)}`);

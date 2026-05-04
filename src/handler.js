@@ -1,5 +1,5 @@
 const FLOW = require('./flow');
-const { sendText, sendSequence } = require('./services/whatsapp');
+const { sendText, sendSequence, sendButtons } = require('./services/whatsapp');
 const { getSession, createSession, updateSession, completeSession, appendResponse, getAnswers, setEditing } = require('./services/sheets');
 
 const processedIds = new Set();
@@ -33,7 +33,7 @@ function truncate(text, max = 60) {
   return text.length > max ? text.slice(0, max) + '...' : text;
 }
 
-function buildPreviewMessage(answers) {
+function buildPreviewContent(answers) {
   const order = ['p1','p2','p3','p4','p5','p6','p7','p8','p9'];
   const lines = ['Esto es lo que registré de ti:\n'];
 
@@ -49,7 +49,7 @@ function buildPreviewMessage(answers) {
     lines.push(`${i + 1} · *${step.label}*\n   ${display}`);
   });
 
-  lines.push('\n¿Deseas cambiar alguna respuesta?\n\n*A*  Sí, cambiar una\n*B*  No, la información es correcta');
+  lines.push('\n¿Deseas cambiar alguna respuesta?');
   return lines.join('\n');
 }
 
@@ -63,7 +63,10 @@ async function advanceTo(phone, session, nextKey) {
   } else if (nextStep.type === 'summary') {
     await updateSession(session, nextKey);
     const answers = await getAnswers(session);
-    await sendText(phone, buildPreviewMessage(answers));
+    await sendButtons(phone, buildPreviewContent(answers), [
+      { id: 'preview_cambiar',    title: 'Sí, cambiar una' },
+      { id: 'preview_confirmar',  title: 'Confirmar datos' }
+    ]);
   } else {
     await updateSession(session, nextKey);
     await sendSequence(phone, nextStep.messages);
@@ -89,18 +92,15 @@ async function processMessage(phone, text) {
 
   const trimmed = text.trim();
 
-  // -- Previsualización: espera A o B --
+  // -- Previsualización: espera respuesta de botón --
   if (step.type === 'summary') {
-    const answer = trimmed.toUpperCase()[0];
-    if (!['A', 'B'].includes(answer)) {
-      await sendText(phone, 'Responde *A* para cambiar una respuesta o *B* para confirmar.');
-      return;
-    }
-    if (answer === 'A') {
+    if (trimmed === 'preview_cambiar') {
       await advanceTo(phone, session, 'edit_menu');
-    } else {
+    } else if (trimmed === 'preview_confirmar') {
       await setEditing(session, false);
       await advanceTo(phone, session, 'c1');
+    } else {
+      await sendText(phone, 'Por favor usa los botones para responder.');
     }
     return;
   }
